@@ -6,7 +6,8 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Data
-@Entity(name="users")
+@Entity
+@Table(name="users", indexes = @Index(name = "idx_nickname", columnList = "nickname"))
 public class UserEntity {
 
     @Id
