@@ -1,9 +1,7 @@
 package com.api.OAuth.Service;
 
-import com.api.OAuth.Info.GoogleUserInfo;
-import com.api.OAuth.Info.KakaoUserInfo;
-import com.api.OAuth.Info.NaverUserInfo;
-import com.api.OAuth.Info.OAuth2UserInfo;
+import com.api.OAuth.Dto.CustomUser;
+import com.api.OAuth.Info.*;
 import com.api.User.Entity.UserEntity;
 import com.api.User.Repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -63,11 +61,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService  {
                     .role(role)
                     .build();
             userRepository.save(user);
-        } else {
-            log.info("이미 우리 사람");
+            user = userRepository.findByUsername(username);
+            log.info("회원 가입 성공");
         }
 
-        return super.loadUser(userRequest);
+        return new CustomUser(user.getUsername(), user.getNickname(), user.getEmail());
     }
 
 }

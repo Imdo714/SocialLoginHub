@@ -1,24 +1,32 @@
 package com.api.Config;
 
+import com.api.OAuth.Filter.MyFilter1;
 import com.api.OAuth.Service.CustomOAuth2UserService;
 import com.api.User.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final UserRepository userRepository;
+    private final CorsFilter corsFilter;
 
-    public SecurityConfig(UserRepository userRepository) {
+    public SecurityConfig(UserRepository userRepository, CorsFilter corsFilter) {
         this.userRepository = userRepository;
+        this.corsFilter = corsFilter;
     }
 
     @Bean
@@ -36,6 +44,8 @@ public class SecurityConfig {
 
         http
                 .csrf((auth) -> auth.disable()); // CSRF 비활성화
+//        http
+//                .formLogin((auth) -> auth.disable()); // form login 비활성화
 
         http
                 .logout(logout -> logout
@@ -53,16 +63,11 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/loginSuccess", true) // 로그인 성공 시 리디렉션
                 .failureUrl("/loginFailure") // 로그인 실패 시 리디렉션
         );
+        http
+                .addFilter(corsFilter)
+                .addFilterBefore(new MyFilter1(), UsernamePasswordAuthenticationFilter.class); // SecurityConfig보다 먼저 실행
 
         return http.build();
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-
-
 
 }
