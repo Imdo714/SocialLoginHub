@@ -1,6 +1,8 @@
 package com.api.User.Controller;
 
 import com.api.OAuth.Dto.CustomUser;
+import com.api.User.Entity.TokenEntity;
+import com.api.User.Entity.UserEntity;
 import com.api.User.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,7 @@ public class UserController {
     public String loginSuccess(@AuthenticationPrincipal CustomUser customUser){
         log.info("로그인 성공 = {}", customUser);
 
-        userService.token(customUser);
+        TokenEntity res = userService.token(customUser);
 
         return "로그인 성공";
     }

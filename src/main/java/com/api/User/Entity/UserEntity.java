@@ -12,7 +12,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private int userid;
 
     @Column(unique = true)
     private String username;
@@ -34,8 +34,8 @@ public class UserEntity {
     private String createDate;
 
     @Builder
-    public UserEntity(int userId, String username, String email, String nickname, String providerid, String role, String createDate) {
-        this.userId = userId;
+    public UserEntity(int userid, String username, String email, String nickname, String providerid, String role, String createDate) {
+        this.userid = userid;
         this.username = username;
         this.email = email;
         this.nickname = nickname;
@@ -45,4 +45,5 @@ public class UserEntity {
     }
 
     public UserEntity() {}
+
 }

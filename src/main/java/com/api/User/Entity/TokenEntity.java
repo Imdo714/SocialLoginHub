@@ -13,8 +13,23 @@ import java.sql.Timestamp;
 public class TokenEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "token_id")
+    private int tokenId;  // PK로 사용될 고유 식별자
+
     @Column(name = "user_id")
-    private int userId;
+    private int userid; // FK
+
+    /**
+     * CascadeType.PERSIST :부모 엔터티 FK가 저장될때 연관된 자식 엔터티도 저장
+     * CascadeType.MERGE : 부모 엔터티 FK가 병합될 때 연관된 자식 엔터티도 병합
+     * CascadeType.REMOVE : 부모 엔터티 FK가 삭제될 때 연관된 자식 엔터티도 삭제
+     * CascadeType.REFRESH : 부모 엔터티 새로 고쳐질때 (DB 재로딩) 연관된 자식 엔터티도 새로 고침
+     * CascadeType.ALL : 위의 모든 Cascade 작업 포함
+     */
+    @ManyToOne(cascade = CascadeType.ALL)  // Cascade 설정
+    @JoinColumn(name = "user_id", referencedColumnName = "userId", insertable = false, updatable = false)
+    private UserEntity user; // UserEntity와의 연관 관계
 
     @Column(name = "access_token")
     private String accessToken;
@@ -33,7 +48,10 @@ public class TokenEntity {
     public TokenEntity(){};
 
     @Builder
-    public TokenEntity(String accessToken, String refreshToken, Timestamp accessExpirationTime, Timestamp refreshExpirationTime) {
+    public TokenEntity(int tokenId, int userid, UserEntity user, String accessToken, String refreshToken, Timestamp accessExpirationTime, Timestamp refreshExpirationTime) {
+        this.tokenId = tokenId;
+        this.userid = userid;
+        this.user = user;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.accessExpirationTime = accessExpirationTime;

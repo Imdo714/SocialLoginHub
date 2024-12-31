@@ -65,7 +65,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService  {
             log.info("회원 가입 성공");
         }
 
-        return new CustomUser(user.getUsername(), user.getNickname(), user.getEmail());
+        return new CustomUser(user.getUserid(), user.getUsername(), user.getNickname(), user.getEmail());
     }
 
 }
