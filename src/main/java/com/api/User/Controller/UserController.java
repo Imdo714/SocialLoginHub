@@ -1,6 +1,7 @@
 package com.api.User.Controller;
 
 import com.api.OAuth.Dto.CustomUser;
+import com.api.User.Dto.TokenDTO;
 import com.api.User.Entity.TokenEntity;
 import com.api.User.Entity.UserEntity;
 import com.api.User.Service.UserService;
@@ -26,7 +27,8 @@ public class UserController {
     public String loginSuccess(@AuthenticationPrincipal CustomUser customUser){
         log.info("로그인 성공 = {}", customUser);
 
-        TokenEntity res = userService.token(customUser);
+        TokenDTO res = userService.token(customUser);
+        log.info("res = {}", res);
 
         return "로그인 성공";
     }

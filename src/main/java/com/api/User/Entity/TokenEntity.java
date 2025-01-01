@@ -27,7 +27,7 @@ public class TokenEntity {
      * CascadeType.REFRESH : 부모 엔터티 새로 고쳐질때 (DB 재로딩) 연관된 자식 엔터티도 새로 고침
      * CascadeType.ALL : 위의 모든 Cascade 작업 포함
      */
-    @ManyToOne(cascade = CascadeType.ALL)  // Cascade 설정
+    @ManyToOne(cascade = CascadeType.REMOVE)  // Cascade 설정
     @JoinColumn(name = "user_id", referencedColumnName = "userId", insertable = false, updatable = false)
     private UserEntity user; // UserEntity와의 연관 관계
 
