@@ -1,6 +1,7 @@
 package com.api.Config;
 
 import com.api.OAuth.Filter.MyFilter1;
+import com.api.OAuth.Service.CustomOAuth2FailureHandler;
 import com.api.OAuth.Service.CustomOAuth2UserService;
 import com.api.User.Repository.UserRepository;
 import org.springframework.context.annotation.Bean;
@@ -52,7 +53,7 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/") // 로그아웃 후 리디렉션
                         .invalidateHttpSession(true) // 세션 무효화
-                        .deleteCookies("JSESSIONID") // JSESSIONID 쿠키 삭제
+                        .deleteCookies("JSESSIONID", "RefreshToken") // JSESSIONID 쿠키 삭제
                 );
 
         http
@@ -61,7 +62,7 @@ public class SecurityConfig {
                         .userService(customOAuth2UserService())
                 )
                 .defaultSuccessUrl("/loginSuccess", true) // 로그인 성공 시 리디렉션
-                .failureUrl("/loginFailure") // 로그인 실패 시 리디렉션
+                .failureHandler(new CustomOAuth2FailureHandler()) // 로그인 실패 시 리디렉션
         );
         http
                 .addFilter(corsFilter)

@@ -5,10 +5,18 @@ import com.api.User.Dto.TokenDTO;
 import com.api.User.Entity.TokenEntity;
 import com.api.User.Entity.UserEntity;
 import com.api.User.Service.UserService;
+import com.api.Utils.CookieUtil.CookieUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -24,18 +32,23 @@ public class UserController {
     }
 
     @GetMapping("/loginSuccess")
-    public String loginSuccess(@AuthenticationPrincipal CustomUser customUser){
-        log.info("로그인 성공 = {}", customUser);
+    public ResponseEntity<?> loginSuccess(@AuthenticationPrincipal CustomUser customUser, HttpServletResponse response){
+        if (customUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
 
         TokenDTO res = userService.token(customUser);
-        log.info("res = {}", res);
 
-        return "로그인 성공";
+        Cookie refreshTokenCookie = CookieUtil.createCookie("RefreshToken", res.getRefreshToken(), -1);
+        response.addCookie(refreshTokenCookie);
+
+        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공");
     }
 
     @GetMapping("/loginFailure")
-    public String loginFailure(){
-        return "로그인 실패";
+    public ResponseEntity<?> loginFailure(@RequestParam(required = false) String error){
+        log.info("error = {}", error);
+        return ResponseEntity.status(HttpStatus.OK).body("로그인 실패");
     }
 
 
