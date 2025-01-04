@@ -27,11 +27,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	runtimeOnly 'com.h2database:h2'
 	// Spring Security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// OAuth2 클라이언트 기능을 추가해 GitHub 등의 외부 OAuth 제공자를 사용한 인증을 쉽게 설정할 수 있게 합니다.
