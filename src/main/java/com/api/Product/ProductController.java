@@ -24,7 +24,6 @@ public class ProductController {
     @PostMapping(value="/product", produces="application/json; charset=UTF-8")
     public ResponseEntity<ProductDto> saveProduct(@Valid @RequestBody ProductDto productDto){
         ProductDto savedProduct = productService.productSave(productDto);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
@@ -68,4 +67,21 @@ public class ProductController {
         }
     }
 
+
+    @ResponseBody
+    @PatchMapping(value="/product/{productId}", produces="application/json; charset=UTF-8")
+    public ResponseEntity<?> updateProduct(@PathVariable int productId, @Valid
+                              @RequestParam(required = false) String name,
+                              @RequestParam(required = false) Integer price,
+                              @RequestParam(required = false) Integer quantity){
+
+        log.info("productId = {}", productId);
+        log.info("name = {}", name);
+        log.info("price = {}", price);
+        log.info("quantity = {}", quantity);
+
+        ProductDto res = productService.updateProduct(productId, name, price, quantity);
+        log.info("res = {}", res);
+        return ResponseEntity.ok(res);
+    }
 }

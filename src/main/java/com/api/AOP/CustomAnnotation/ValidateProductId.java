@@ -22,6 +22,5 @@ public @interface ValidateProductId {
      *  RetentionPolicy.CLASS: 클래스 파일에 포함되지만, 런타임 시에는 사용 불가.
      *  RetentionPolicy.RUNTIME: 런타임 시에도 유지되며 리플렉션(Reflection)을 통해 접근 가능.
      *
-     *
-     * */
+     */
 }

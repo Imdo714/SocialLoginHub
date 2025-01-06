@@ -1,5 +1,6 @@
 package com.api.AOP;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -29,6 +31,7 @@ public class GlobalExceptionHandler {
     // Valid 예외
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        log.info("MethodArgumentNotValidException 예외 발생");
         // BindingResult를 가져옴
         BindingResult bindingResult = ex.getBindingResult();
         Map<String, String> errors = new HashMap<>();
@@ -43,14 +46,16 @@ public class GlobalExceptionHandler {
     // IllegalArgumentException 잘못된 파라미터 예외
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.info("IllegalArgumentException 예외 발생");
         Map<String, String> errorResponse = new HashMap<>();
         // 무슨 에러인지 담아서 보내줌
         errorResponse.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        log.info("DataIntegrityViolationException 예외 발생");
         Map<String, String> errorResponse = new HashMap<>();
         // 무슨 에러인지 담아서 보내줌
         errorResponse.put("error", ex.getMessage());

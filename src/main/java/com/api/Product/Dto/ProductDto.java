@@ -1,5 +1,6 @@
 package com.api.Product.Dto;
 
+import com.api.Product.Entity.ProductEntity;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,5 +30,12 @@ public class ProductDto {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    public ProductDto(ProductEntity product) {
+        this.productId = product.getProductId();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.quantity = product.getQuantity();
     }
 }

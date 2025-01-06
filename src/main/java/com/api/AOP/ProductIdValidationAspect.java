@@ -18,14 +18,12 @@ public class ProductIdValidationAspect {
         this.productRepository = productRepository;
     }
 
+    // ValidateProductId 어노테이션이 붙은 productId 조회
     @Before("@annotation(com.api.AOP.CustomAnnotation.ValidateProductId) && args(productId, ..)")
     public void validateProductId(int productId) {
-        log.info("AOP 검증 - Product ID: {}", productId);
-
         boolean exists = productRepository.existsById(productId);
         if (!exists) {
             throw new IllegalArgumentException("Product with ID " + productId + " does not exist.");
         }
-
     }
 }
