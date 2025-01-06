@@ -1,14 +1,13 @@
 package com.api.Product;
 
+import com.api.AOP.CustomAnnotation.ValidateProductId;
 import com.api.Product.Dto.ProductDto;
-import com.api.Product.Entity.ProductEntity;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -29,6 +28,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
+    @ValidateProductId
     @ResponseBody
     @GetMapping(value="/product/{productId}", produces="application/json; charset=UTF-8")
     public ResponseEntity<?> getProduct(@PathVariable int productId){
@@ -38,25 +38,33 @@ public class ProductController {
          *  반드시 isPresent()로 존재 여부를 확인한 뒤 호출해야 안전합니다.
          *  Optional은 데이터가 없을 경우 null 대신 Optional.empty()를 반환하여 안전하게 처리 가능.
          */
-        Optional<ProductDto> product = productService.selectProduct(productId);
+//        Optional<ProductDto> product = productService.selectProduct(productId);
+//
+//        if (product.isPresent()) {
+//            return ResponseEntity.ok(product.get());
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body("Product not found");
+//        }
 
-        if (product.isPresent()) {
-            return ResponseEntity.ok(product.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Product not found");
-        }
+        // TODO : 위에 방식은 직접 처리 밑에 방식은 예외를 던져 전역적으로 처리 하는 방식
+
+        // AOP로 검증을 하지만 한번더 없는 상품이 나오면 예외를 던짐
+        ProductDto product = productService.selectProduct(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        return ResponseEntity.ok(product);
     }
 
+    @ValidateProductId
     @ResponseBody
     @DeleteMapping(value="/product/{productId}", produces="application/json; charset=UTF-8")
     public ResponseEntity<?> deleteProduct(@PathVariable int productId){
-        boolean exists = productRepository.existsById(productId);
-        if (exists) {
+        try {
             productRepository.deleteById(productId);
             return ResponseEntity.ok("삭제 성공");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("없는 상품 ID : " + productId);
+        } catch (DataIntegrityViolationException ex) {
+            // catch 예외를 받아서 다시 예외를 던짐
+            throw new DataIntegrityViolationException("database constraints");
         }
     }
 
