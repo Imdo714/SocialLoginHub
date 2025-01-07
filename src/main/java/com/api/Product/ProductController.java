@@ -2,12 +2,16 @@ package com.api.Product;
 
 import com.api.AOP.CustomAnnotation.ValidateProductId;
 import com.api.Product.Dto.ProductDto;
+import com.api.Product.Repository.ProductRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -67,21 +71,24 @@ public class ProductController {
         }
     }
 
-
+    @ValidateProductId
     @ResponseBody
     @PatchMapping(value="/product/{productId}", produces="application/json; charset=UTF-8")
     public ResponseEntity<?> updateProduct(@PathVariable int productId, @Valid
                               @RequestParam(required = false) String name,
                               @RequestParam(required = false) Integer price,
                               @RequestParam(required = false) Integer quantity){
-
-        log.info("productId = {}", productId);
-        log.info("name = {}", name);
-        log.info("price = {}", price);
-        log.info("quantity = {}", quantity);
-
         ProductDto res = productService.updateProduct(productId, name, price, quantity);
         log.info("res = {}", res);
         return ResponseEntity.ok(res);
     }
+
+    // 파일 업로드 하나 만들어 보자 !
+    @ResponseBody
+    @PostMapping(value="/product/img/{productId}", produces="application/json; charset=UTF-8")
+    public void imgProduct(@RequestParam("imageFiles") List<MultipartFile> imageFiles, @PathVariable Integer productId){
+        log.info("imageFiles = {}", imageFiles);
+        productService.uploadImg(imageFiles, productId);
+    }
+
 }

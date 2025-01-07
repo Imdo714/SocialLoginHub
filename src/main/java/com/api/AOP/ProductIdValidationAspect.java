@@ -1,7 +1,6 @@
 package com.api.AOP;
 
-import com.api.Product.ProductRepository;
-import com.api.Product.ProductService;
+import com.api.Product.Repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

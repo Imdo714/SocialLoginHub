@@ -1,4 +1,4 @@
-package com.api.Product;
+package com.api.Product.Repository;
 
 import com.api.Product.Entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
