@@ -21,8 +21,7 @@ public class UserEntity {
      *  @ManyToOne : N : 1 관계  여러개의 자식 하나의 부모가있으면 자식 엔티티에 설정
      *  @ManyToMany : N : M 관계
      */
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true) // 양방향 관계
     private TokenEntity tokenEntity;
 
     @Column(unique = true)

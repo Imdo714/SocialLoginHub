@@ -53,11 +53,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    // DB 문제
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         log.info("DataIntegrityViolationException 예외 발생");
         Map<String, String> errorResponse = new HashMap<>();
-        // 무슨 에러인지 담아서 보내줌
         errorResponse.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }

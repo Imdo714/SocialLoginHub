@@ -8,6 +8,7 @@ import com.api.Product.Repository.ImageRepository;
 import com.api.Product.Repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -60,6 +61,7 @@ public class ProductService {
 //                });
     }
 
+    @Transactional
     public ProductDto  updateProduct(int productId, String  name, Integer price, Integer quantity){
         ProductEntity existingProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
