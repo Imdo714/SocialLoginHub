@@ -47,6 +47,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
         log.info("IllegalArgumentException 예외 발생");
+        log.info("IllegalArgumentException = {}",  ex.getMessage());
         Map<String, String> errorResponse = new HashMap<>();
         // 무슨 에러인지 담아서 보내줌
         errorResponse.put("error", ex.getMessage());
