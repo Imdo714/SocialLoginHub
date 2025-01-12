@@ -11,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -45,14 +46,17 @@ public class UserController {
 //    }
 
     @GetMapping("/loginSuccess")
-    public ResponseEntity<String> loginSuccess(@AuthenticationPrincipal CustomUser customUser, HttpServletResponse response){
+    public ResponseEntity<?> loginSuccess(@AuthenticationPrincipal CustomUser customUser, HttpServletResponse response){
         if (customUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-        TokenRedis res = userService.token(customUser);
-        log.info("res = {}", res);
-        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공");
+        try{
+            TokenRedis res = userService.token(customUser);
+            return ResponseEntity.status(HttpStatus.OK).body(res);
+        } catch (RedisConnectionFailureException e){
+            throw new RedisConnectionFailureException("RedisConnectionFailure");
+        }
     }
 
     @GetMapping("/loginFailure")

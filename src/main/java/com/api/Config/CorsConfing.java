@@ -11,9 +11,10 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class CorsConfing {
 
+    // Cors 직접 사용
     @Bean
     public CorsFilter corsFitter(){
-        log.info("Cors 필터1 시작");
+        log.info("================== Cors 필터1 시작 ========================");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration config = new CorsConfiguration();
@@ -21,7 +22,6 @@ public class CorsConfing {
         config.addAllowedOrigin("*"); // 모든 IP 출처가 달라도 응답을 허용
         config.addAllowedHeader("*"); // 모든 헤데어 응답을 허용
         config.addAllowedMethod("*"); // 모든 메서드에 요청을 허용
-        log.info("Cors 필터1 시작");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

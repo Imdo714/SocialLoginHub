@@ -10,6 +10,7 @@ import com.api.User.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,19 +70,24 @@ public class UserService {
 
     @Transactional
     public TokenRedis token(CustomUser customUser) {
-        String accessToken = jwtInterface.getAccess(customUser.getName());
-        saveAccessToken(customUser.getName(), accessToken, 60); // accessToken 저장
-        String res = getAccessToken(customUser.getName()); // 키값 정보 뺴오기
-        log.info("res = {}", res);
+        String accessToken = null;
+        try {
+            accessToken = jwtInterface.getAccess(customUser.getName());
+            log.info("accessToken = {}", accessToken);
 
-        Long res3 = getTTLAccess(customUser.getName()); // TTL 시간 확인
-        log.info("res3 = {}", res3);
+            saveAccessToken(customUser.getName(), accessToken, 60); // accessToken 저장
+            String getAccess = getAccessToken(customUser.getName()); // 키값 정보 뺴오기
+            log.info("getAccess = {}", getAccess);
 
-        setTTLAccess(customUser.getName(), 30);
-        log.info("==============시간 수정============");
+            Long getTTL = getTTLAccess(customUser.getName()); // TTL 시간 확인
+            log.info("getTTL = {}", getTTL);
 
-        Long res4 = getTTLAccess(customUser.getName()); // TTL 시간 확인
-        log.info("res4 = {}", res4);
+        } catch (RedisConnectionFailureException e){
+            log.error("Redis 서버 연결 실패: ", e);
+            throw new RedisConnectionFailureException("Redis 문제");
+        } catch (Exception e) {
+            log.error("Redis 작업 중 오류가 발생했습니다: ", e);
+        }
 
         return new TokenRedis(customUser.getName(), accessToken);
     }
@@ -89,16 +95,43 @@ public class UserService {
     // accessToken 저장
     public void saveAccessToken(String userId, String accessToken, long accessTokenTTL) {
         redisTemplate.opsForValue().set("accessToken:" + userId, accessToken, Duration.ofSeconds(accessTokenTTL));
+//        try {
+//            redisTemplate.opsForValue().set("accessToken:" + userId, accessToken, Duration.ofSeconds(accessTokenTTL));
+//        } catch (RedisConnectionFailureException e) {
+//            log.error("Redis 서버 연결 실패: ", e);
+//            // Redis 서버 연결 실패 시 대체 로직
+//        } catch (Exception e) {
+//            log.error("accessToken 저장 중 오류 발생: ", e);
+//            // 다른 예외 처리
+//        }
     }
 
     // accessToken 조회
     public String getAccessToken(String userId) {
         return (String) redisTemplate.opsForValue().get("accessToken:" + userId);
+//        try {
+//            return (String) redisTemplate.opsForValue().get("accessToken:" + userId);
+//        } catch (RedisConnectionFailureException e) {
+//            log.error("Redis 서버 연결 실패: ", e);
+//            return null; // Redis 서버와 연결 실패 시 null 반환
+//        } catch (Exception e) {
+//            log.error("accessToken 조회 중 오류 발생: ", e);
+//            return null; // 다른 예외 처리
+//        }
     }
 
     // accessToken TTL 조회
     public Long getTTLAccess(String key) {
         return redisTemplate.getExpire("accessToken:" + key);
+//        try {
+//            return redisTemplate.getExpire("accessToken:" + key);
+//        } catch (RedisConnectionFailureException e) {
+//            log.error("Redis 서버 연결 실패: ", e);
+//            return null; // TTL 조회 실패 시 null 반환
+//        } catch (Exception e) {
+//            log.error("TTL 조회 중 오류 발생: ", e);
+//            return null; // 다른 예외 처리
+//        }
     }
 
     // accessToken TTL 갱신

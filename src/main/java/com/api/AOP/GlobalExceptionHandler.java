@@ -2,6 +2,7 @@ package com.api.AOP;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -49,7 +50,6 @@ public class GlobalExceptionHandler {
         log.info("IllegalArgumentException 예외 발생");
         log.info("IllegalArgumentException = {}",  ex.getMessage());
         Map<String, String> errorResponse = new HashMap<>();
-        // 무슨 에러인지 담아서 보내줌
         errorResponse.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
@@ -63,5 +63,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 
+    // Redis 연결 실패 예외 처리
+    @ExceptionHandler(RedisConnectionFailureException.class)
+    public ResponseEntity<Map<String, String>> handleRedisConnectionFailureException(RedisConnectionFailureException ex) {
+        log.info("RedisConnectionFailureException 예외 발생");
 
+        // 에러 메시지 생성
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", ex.getMessage());
+
+        // 409 Conflict 상태 코드로 응답
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
 }

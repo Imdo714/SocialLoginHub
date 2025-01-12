@@ -50,4 +50,14 @@ public class CustomUser implements OAuth2User {
     public String getName() {
         return username;
     }
+
+    @Override
+    public String toString() {
+        return "CustomUser{" +
+                "userid=" + userid +
+                ", username='" + username + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
