@@ -4,8 +4,6 @@ import com.api.OAuth.Jwt.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,11 +15,10 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Base64;
 
 @Slf4j
 @Component
-public class MyFilter1 extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
 
     // implements Filter: Spring Boot가 아닌 표준 Servlet 환경에서 작업하는 경우
     // extends OncePerRequestFilter: Spring Boot 또는 Spring Security 기반의 프로젝트에서 요청당 한 번 실행되는 필터가 필요한 경우

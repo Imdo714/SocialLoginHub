@@ -1,8 +1,7 @@
 package com.api.User.Service;
 
-import com.api.OAuth.Dto.CustomUser;
+import com.api.OAuth.CustomHandler.Dto.CustomUser;
 import com.api.OAuth.Jwt.JwtInterface;
-import com.api.User.Dto.TokenDTO;
 import com.api.User.Entity.TokenEntity;
 import com.api.User.Redis.TokenRedis;
 import com.api.User.Repository.TokenRepository;
@@ -36,7 +35,7 @@ public class UserService {
     * 모든 필드를 다시 설정해야 하기 때문에 수정시에는 Setter 방식으로 부분적으로 수정
     */
 
-//    @Transactional
+//    @Transactional // DB에 저장 하는 메서드
 //    public TokenDTO token(CustomUser customUser) {
 //        TokenEntity token = createToken(customUser); // 토큰 생성
 //        TokenEntity existingToken = tokenRepository.findByUserid(customUser.getUserid()); // 토큰 있는지 유무 확인
@@ -95,43 +94,16 @@ public class UserService {
     // accessToken 저장
     public void saveAccessToken(String userId, String accessToken, long accessTokenTTL) {
         redisTemplate.opsForValue().set("accessToken:" + userId, accessToken, Duration.ofSeconds(accessTokenTTL));
-//        try {
-//            redisTemplate.opsForValue().set("accessToken:" + userId, accessToken, Duration.ofSeconds(accessTokenTTL));
-//        } catch (RedisConnectionFailureException e) {
-//            log.error("Redis 서버 연결 실패: ", e);
-//            // Redis 서버 연결 실패 시 대체 로직
-//        } catch (Exception e) {
-//            log.error("accessToken 저장 중 오류 발생: ", e);
-//            // 다른 예외 처리
-//        }
     }
 
     // accessToken 조회
     public String getAccessToken(String userId) {
         return (String) redisTemplate.opsForValue().get("accessToken:" + userId);
-//        try {
-//            return (String) redisTemplate.opsForValue().get("accessToken:" + userId);
-//        } catch (RedisConnectionFailureException e) {
-//            log.error("Redis 서버 연결 실패: ", e);
-//            return null; // Redis 서버와 연결 실패 시 null 반환
-//        } catch (Exception e) {
-//            log.error("accessToken 조회 중 오류 발생: ", e);
-//            return null; // 다른 예외 처리
-//        }
     }
 
     // accessToken TTL 조회
     public Long getTTLAccess(String key) {
         return redisTemplate.getExpire("accessToken:" + key);
-//        try {
-//            return redisTemplate.getExpire("accessToken:" + key);
-//        } catch (RedisConnectionFailureException e) {
-//            log.error("Redis 서버 연결 실패: ", e);
-//            return null; // TTL 조회 실패 시 null 반환
-//        } catch (Exception e) {
-//            log.error("TTL 조회 중 오류 발생: ", e);
-//            return null; // 다른 예외 처리
-//        }
     }
 
     // accessToken TTL 갱신

@@ -1,6 +1,10 @@
-package com.api.OAuth.CustomHandler;
+package com.api.OAuth.CustomHandler.Handler;
 
-import com.api.OAuth.Dto.CustomUser;
+import com.api.OAuth.CustomHandler.Dto.CustomUser;
+import com.api.OAuth.CustomHandler.Info.GoogleUserInfo;
+import com.api.OAuth.CustomHandler.Info.KakaoUserInfo;
+import com.api.OAuth.CustomHandler.Info.NaverUserInfo;
+import com.api.OAuth.CustomHandler.Info.OAuth2UserInfo;
 import com.api.OAuth.Info.*;
 import com.api.User.Entity.UserEntity;
 import com.api.User.Repository.UserRepository;

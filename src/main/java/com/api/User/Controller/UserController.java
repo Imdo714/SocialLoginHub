@@ -1,22 +1,15 @@
 package com.api.User.Controller;
 
-import com.api.OAuth.Dto.CustomUser;
-import com.api.User.Dto.TokenDTO;
-import com.api.User.Entity.TokenEntity;
-import com.api.User.Entity.UserEntity;
+import com.api.OAuth.CustomHandler.Dto.CustomUser;
 import com.api.User.Redis.TokenRedis;
 import com.api.User.Service.UserService;
-import com.api.Utils.CookieUtil.CookieUtil;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j

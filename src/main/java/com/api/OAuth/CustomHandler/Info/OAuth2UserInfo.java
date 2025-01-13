@@ -1,4 +1,4 @@
-package com.api.OAuth.Info;
+package com.api.OAuth.CustomHandler.Info;
 
 public interface OAuth2UserInfo {
 

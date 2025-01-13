@@ -1,8 +1,8 @@
 package com.api.Config;
 
-import com.api.OAuth.CustomHandler.CustomLogoutSuccessHandler;
-import com.api.OAuth.CustomHandler.CustomOAuth2FailureHandler;
-import com.api.OAuth.CustomHandler.CustomOAuth2UserService;
+import com.api.OAuth.CustomHandler.Handler.CustomLogoutSuccessHandler;
+import com.api.OAuth.CustomHandler.Handler.CustomOAuth2FailureHandler;
+import com.api.OAuth.CustomHandler.Handler.CustomOAuth2UserService;
 import com.api.User.Repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

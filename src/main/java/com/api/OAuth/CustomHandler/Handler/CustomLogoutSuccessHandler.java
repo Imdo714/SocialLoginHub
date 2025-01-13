@@ -1,4 +1,4 @@
-package com.api.OAuth.CustomHandler;
+package com.api.OAuth.CustomHandler.Handler;
 
 import com.api.User.Service.UserService;
 import jakarta.servlet.ServletException;

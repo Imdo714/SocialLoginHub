@@ -1,7 +1,8 @@
-package com.api.Product;
+package com.api.Product.Controller;
 
 import com.api.AOP.CustomAnnotation.ValidateProductId;
 import com.api.Product.Dto.ProductDto;
+import com.api.Product.Service.ProductService;
 import com.api.Product.Repository.ProductRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

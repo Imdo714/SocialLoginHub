@@ -1,27 +1,23 @@
-package com.api.OAuth.Info;
-
-import lombok.extern.slf4j.Slf4j;
+package com.api.OAuth.CustomHandler.Info;
 
 import java.util.Map;
 
-@Slf4j
-public class NaverUserInfo implements OAuth2UserInfo{
+public class GoogleUserInfo implements OAuth2UserInfo{
 
-    private Map<String, Object> attributes; // getAttributes()
+    private Map<String, Object> attributes; // getAttributes() 받아줘 
 
-    public NaverUserInfo(Map<String, Object> attributes){
+    public GoogleUserInfo(Map<String, Object> attributes){
         this.attributes = attributes;
     }
 
     @Override
     public String getProviderld() {
-        log.info("id = {}", attributes.get("id"));
-        return (String) attributes.get("id");
+        return (String) attributes.get("sub");
     }
 
     @Override
     public String getProvoder() {
-        return "naver";
+        return "google";
     }
 
     @Override

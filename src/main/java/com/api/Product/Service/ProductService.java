@@ -1,4 +1,4 @@
-package com.api.Product;
+package com.api.Product.Service;
 
 import com.api.Product.Entity.ImageData;
 import com.api.Product.Dto.ImageHandler;

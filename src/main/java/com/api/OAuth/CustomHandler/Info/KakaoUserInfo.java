@@ -1,4 +1,4 @@
-package com.api.OAuth.Info;
+package com.api.OAuth.CustomHandler.Info;
 
 import lombok.extern.slf4j.Slf4j;
 
