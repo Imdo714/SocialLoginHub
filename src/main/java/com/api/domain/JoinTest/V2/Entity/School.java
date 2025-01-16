@@ -10,8 +10,10 @@ public class School {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "school_id")
     private Long id;
 
+    @Column(name = "school_name")
     private String name;
 
     public School(){}

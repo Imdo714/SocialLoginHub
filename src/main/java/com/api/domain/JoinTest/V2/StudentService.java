@@ -25,12 +25,17 @@ public class StudentService {
         schoolRepository.save(school);
 
         // ClassEntity 생성
-        ClassEntity classEntity = new ClassEntity("Class A");
-        classEntityRepository.save(classEntity);
+        ClassEntity class1 = new ClassEntity("Class A");
+        ClassEntity class2 = new ClassEntity("Class B");
+        classEntityRepository.save(class1);
+        classEntityRepository.save(class2);
 
-        // Member 생성
-        Student member = new Student("John Doe", school, classEntity);
-        studentRepository.save(member);
+        // Student 생성
+        Student student = new Student("John Doe", school);
+        student.getClasses().add(class1);
+        student.getClasses().add(class2);
+        studentRepository.save(student);
+
     }
 
     public Student findMember(Long id) {

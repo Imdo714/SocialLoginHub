@@ -1,27 +1,37 @@
 package com.api.domain.JoinTest.V1.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
-@ToString(exclude = "writer") // exclude : toString 대상에서 제외한다
-public class Board extends BaseEntity{
+@Setter
+@Entity
+public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bno;
+    @Column(name = "board_id")
+    private Long id;
 
+    @Column(name = "board_title")
     private String title;
 
+    @Column(name = "board_content")
     private String content;
 
-    // LAZY : 필요할 때만 사용, LAZY 사용하면 @ToString(exclude) 무조건 사용!
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member writer;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_img_id")  // BoardImg 외래 키 컬럼
+    private BoardImg boardImg;  // Board와 연결되는 BoardImg
+
+    // 기본 생성자, Getter, Setter
+    public Board() {}
+
+    public Board(String title, String content, BoardImg boardImg) {
+        this.title = title;
+        this.content = content;
+        this.boardImg = boardImg;
+    }
 
 
 }

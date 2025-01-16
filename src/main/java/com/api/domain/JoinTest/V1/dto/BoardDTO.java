@@ -1,31 +1,17 @@
 package com.api.domain.JoinTest.V1.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.api.domain.JoinTest.V1.entity.Board;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class BoardDTO {
-
-    private Long bno;
-
+    private Long id;
     private String title;
+    private String imgUrl;
 
-    private String content;
-
-    private String writerEmail; // 작성자의 이메일(id)
-
-    private String writerName; // 작성자의 이름
-
-//    private LocalDateTime regDate;
-//
-//    private LocalDateTime modDate;
-//
-//    private int replyCount; // 해당 게시글의 댓글 수
+    public BoardDTO(Board board) {
+        this.id = board.getId();
+        this.title = board.getTitle();
+        this.imgUrl = board.getBoardImg().getImgUrl();
+    }
 }
