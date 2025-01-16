@@ -1,4 +1,4 @@
-package com.api.domain.JoinTest.dto;
+package com.api.domain.JoinTest.V1.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.api.domain.JoinTest.entity;
+package com.api.domain.JoinTest.V1.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

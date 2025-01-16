@@ -1,9 +1,9 @@
-package com.api.domain.JoinTest.Service;
+package com.api.domain.JoinTest.V1.Service;
 
-import com.api.domain.JoinTest.Repository.BoardRepository;
-import com.api.domain.JoinTest.dto.BoardWithWriterDTO;
-import com.api.domain.JoinTest.entity.Board;
-import com.api.domain.JoinTest.entity.Member;
+import com.api.domain.JoinTest.V1.Repository.BoardRepository;
+import com.api.domain.JoinTest.V1.dto.BoardWithWriterDTO;
+import com.api.domain.JoinTest.V1.entity.Board;
+import com.api.domain.JoinTest.V1.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

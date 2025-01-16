@@ -1,6 +1,6 @@
-package com.api.domain.JoinTest.dto;
+package com.api.domain.JoinTest.V1.dto;
 
-import com.api.domain.JoinTest.entity.Board;
+import com.api.domain.JoinTest.V1.entity.Board;
 import lombok.Data;
 
 @Data

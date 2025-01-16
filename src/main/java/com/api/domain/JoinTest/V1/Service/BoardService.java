@@ -1,6 +1,6 @@
-package com.api.domain.JoinTest.Service;
+package com.api.domain.JoinTest.V1.Service;
 
-import com.api.domain.JoinTest.dto.BoardWithWriterDTO;
+import com.api.domain.JoinTest.V1.dto.BoardWithWriterDTO;
 
 import java.util.List;
 
