@@ -1,4 +1,4 @@
-package com.api.global.OAuth.Filter;
+package com.api.global.OAuth.Jwt.Filter;
 
 import com.api.global.OAuth.Jwt.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
@@ -24,8 +24,13 @@ public class JwtFilter extends OncePerRequestFilter {
     // extends OncePerRequestFilter: Spring Boot 또는 Spring Security 기반의 프로젝트에서 요청당 한 번 실행되는 필터가 필요한 경우
 
     private static final String SECRET_KEY = JwtTokenProvider.SECRET_KEY;
+
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    public JwtFilter(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -49,6 +54,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if(token == null){
             // token이 없음 잘못된 문법으로 인하여 서버가 요청을 히해할 수 없음
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Access Token is missing");
             return;
         }
 
@@ -76,6 +82,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }catch (Exception e) {
                 log.error("Exception e = {}", e.getMessage());
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Access Token UNAUTHORIZED");
                 return;
             }
         }

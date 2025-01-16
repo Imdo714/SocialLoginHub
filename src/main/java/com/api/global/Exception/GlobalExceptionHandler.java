@@ -1,8 +1,9 @@
-package com.api.global.AOP;
+package com.api.global.Exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -44,6 +45,21 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    // 커스텀 예외 클래스
+    @ExceptionHandler(value = AroundHubException.class)
+    public ResponseEntity<Map<String, String>> ExceptionHandler(AroundHubException e) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+
+        Map<String, String> map = new HashMap<>();
+        map.put("error type", e.getHttpStatusType());
+        map.put(
+                "error code",
+                Integer.toString(e.getHttpStatusCode())); // Map<String, Object>로 설정하면 toString 불필요
+        map.put("message", e.getMessage());
+
+        return new ResponseEntity<>(map, responseHeaders, e.getHttpStatus());
+    }
+
     // IllegalArgumentException 잘못된 파라미터 예외
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
@@ -75,4 +91,6 @@ public class GlobalExceptionHandler {
         // 409 Conflict 상태 코드로 응답
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
+
+
 }

@@ -4,6 +4,8 @@ import com.api.global.AOP.CustomAnnotation.ValidateProductId;
 import com.api.domain.Product.Dto.ProductDto;
 import com.api.domain.Product.Service.ProductService;
 import com.api.domain.Product.Repository.ProductRepository;
+import com.api.global.Exception.AroundHubException;
+import com.api.global.Exception.Constants;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -91,5 +93,13 @@ public class ProductController {
         log.info("imageFiles = {}", imageFiles);
         productService.uploadImg(imageFiles, productId);
     }
+
+    @ResponseBody
+    @GetMapping(value="/product2", produces="application/json; charset=UTF-8")
+    public void exceptionTest() throws AroundHubException {
+        throw new AroundHubException(
+                Constants.ExceptionClass.PRODUCT, HttpStatus.NOT_FOUND, "접근이 금지되었습니다.");
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.api.global.OAuth.CustomHandler.Handler;
 
 import com.api.domain.User.Service.UserService;
+import com.api.domain.Utils.RedisUtil.RedisUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,12 +16,6 @@ import java.io.IOException;
 @Component
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
-    private final UserService userService;
-
-    public CustomLogoutSuccessHandler(UserService userService) {
-        this.userService = userService;
-    }
-
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         /**
@@ -29,7 +24,7 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         if(authentication != null){
             String username = authentication.getName();
             log.info("username = {}", username);
-            userService.deleteDataAccess(username);
+            RedisUtil.deleteDataAccess(username);
 
             response.sendRedirect("/");
         }

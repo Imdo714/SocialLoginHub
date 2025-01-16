@@ -2,6 +2,7 @@ package com.api.domain.User.Service;
 
 import com.api.domain.User.Entity.TokenEntity;
 import com.api.domain.User.Repository.TokenRepository;
+import com.api.domain.Utils.RedisUtil.RedisUtil;
 import com.api.global.OAuth.CustomHandler.Dto.CustomUser;
 import com.api.global.OAuth.Jwt.JwtInterface;
 import com.api.domain.User.Redis.TokenRedis;
@@ -74,11 +75,11 @@ public class UserService {
             accessToken = jwtInterface.getAccess(customUser.getName());
             log.info("accessToken = {}", accessToken);
 
-            saveAccessToken(customUser.getName(), accessToken, 60); // accessToken 저장
-            String getAccess = getAccessToken(customUser.getName()); // 키값 정보 뺴오기
+            RedisUtil.saveAccessToken(customUser.getName(), accessToken, 60); // accessToken 저장
+            String getAccess = RedisUtil.getAccessToken(customUser.getName()); // accessToken 값 조회
             log.info("getAccess = {}", getAccess);
 
-            Long getTTL = getTTLAccess(customUser.getName()); // TTL 시간 확인
+            Long getTTL = RedisUtil.getTTLAccess(customUser.getName()); // TTL 시간 확인
             log.info("getTTL = {}", getTTL);
 
         } catch (RedisConnectionFailureException e){
@@ -91,29 +92,5 @@ public class UserService {
         return new TokenRedis(customUser.getName(), accessToken);
     }
 
-    // accessToken 저장
-    public void saveAccessToken(String userId, String accessToken, long accessTokenTTL) {
-        redisTemplate.opsForValue().set("accessToken:" + userId, accessToken, Duration.ofSeconds(accessTokenTTL));
-    }
-
-    // accessToken 조회
-    public String getAccessToken(String userId) {
-        return (String) redisTemplate.opsForValue().get("accessToken:" + userId);
-    }
-
-    // accessToken TTL 조회
-    public Long getTTLAccess(String key) {
-        return redisTemplate.getExpire("accessToken:" + key);
-    }
-
-    // accessToken TTL 갱신
-    public void setTTLAccess(String key, long ttlInSeconds) {
-        redisTemplate.expire("accessToken:" + key, Duration.ofSeconds(ttlInSeconds));
-    }
-
-    // accessToken 삭제
-    public void deleteDataAccess(String key) {
-        redisTemplate.delete("accessToken:" + key);
-    }
 
 }
