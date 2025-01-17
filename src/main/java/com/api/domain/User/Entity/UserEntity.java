@@ -1,13 +1,21 @@
 package com.api.domain.User.Entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-@Data
+/**
+ *  @NoArgsConstructor : 매개변수가 없는 기본 생성자를 생성합니다.
+ *  @AllArgsConstructor : 모든 필드를 매개변수로 받는 생성자를 생성합니다.
+ *  @Builder : 빌더 패턴을 사용할 수 있도록 메서드를 자동 생성합니다.
+ */
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 @Entity
-@Table(name="users", indexes = @Index(name = "idx_nickname", columnList = "nickname"))
+@Table(name="users")
 public class UserEntity {
 
     @Id
@@ -43,17 +51,5 @@ public class UserEntity {
     @CreationTimestamp
     private String createDate;
 
-    @Builder
-    public UserEntity(int userid, String username, String email, String nickname, String providerid, String role, String createDate) {
-        this.userid = userid;
-        this.username = username;
-        this.email = email;
-        this.nickname = nickname;
-        this.providerid = providerid;
-        this.role = role;
-        this.createDate = createDate;
-    }
-
-    public UserEntity() {}
 
 }
