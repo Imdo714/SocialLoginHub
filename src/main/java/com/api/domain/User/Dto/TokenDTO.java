@@ -17,7 +17,7 @@ public class TokenDTO {
     public TokenDTO(){};
 
     public TokenDTO(TokenEntity token) {
-        this.userid = token.getUserid();
+        this.userid = token.getUserEntity().getUserid();
         this.accessToken = token.getAccessToken();
         this.accessExpirationTime = token.getAccessExpirationTime().toLocalDateTime();
         this.refreshToken = token.getRefreshToken();

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
+
 /**
  *  @NoArgsConstructor : 매개변수가 없는 기본 생성자를 생성합니다.
  *  @AllArgsConstructor : 모든 필드를 매개변수로 받는 생성자를 생성합니다.
@@ -35,7 +37,7 @@ public class UserEntity {
      *
      *  orphanRemoval은 부모-자식 관계에서 고아 객체(orphan)를 자동으로 삭제하는 기능입니다.
      */
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true) // 양방향 관계
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.REMOVE, orphanRemoval = true) // 양방향 관계
     private TokenEntity tokenEntity;
 
     @Column(unique = true)
@@ -55,7 +57,7 @@ public class UserEntity {
 
     @Column
     @CreationTimestamp
-    private String createDate;
+    private LocalDateTime createDate;
 
 
 }

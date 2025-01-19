@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface TokenRepository extends JpaRepository<TokenEntity, Integer> {
 
-    TokenEntity findByUserid(int userid);
+//    TokenEntity findByUserid(int userid);
 
     @Modifying
     @Query("UPDATE TokenEntity t " +
@@ -15,6 +15,6 @@ public interface TokenRepository extends JpaRepository<TokenEntity, Integer> {
             "t.accessExpirationTime = :#{#token.accessExpirationTime}, " +
             "t.refreshToken = :#{#token.refreshToken}, " +
             "t.refreshExpirationTime = :#{#token.refreshExpirationTime} " +
-            "WHERE t.userid = :#{#token.userid}")
+            "WHERE t.userEntity.userid = :#{#token.userid}")
     void updateToken(TokenEntity token);
 }

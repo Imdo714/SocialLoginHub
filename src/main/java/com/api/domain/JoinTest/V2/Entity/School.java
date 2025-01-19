@@ -2,9 +2,16 @@ package com.api.domain.JoinTest.V2.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+import java.util.ArrayList;
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 @Entity
 public class School {
 
@@ -16,9 +23,7 @@ public class School {
     @Column(name = "school_name")
     private String name;
 
-    public School(){}
+    @OneToMany(mappedBy = "school")
+    private List<Student> studentList = new ArrayList<>();
 
-    public School(String name) {
-        this.name = name;
-    }
 }

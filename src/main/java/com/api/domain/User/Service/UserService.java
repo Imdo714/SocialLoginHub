@@ -52,7 +52,6 @@ public class UserService {
 
     private TokenEntity createToken(CustomUser customUser) {
         return TokenEntity.builder()
-                .userid(customUser.getUserid())
                 .accessToken(jwtInterface.getAccess(customUser.getName()))
                 .accessExpirationTime(jwtInterface.getAccessExpiration(jwtInterface.getAccess(customUser.getName())))
                 .refreshToken(jwtInterface.getRefresh(customUser.getName()))

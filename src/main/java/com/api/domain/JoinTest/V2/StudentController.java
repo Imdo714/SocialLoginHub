@@ -1,6 +1,8 @@
 package com.api.domain.JoinTest.V2;
 
+import com.api.domain.JoinTest.V2.Dto.SchoolDTO;
 import com.api.domain.JoinTest.V2.Dto.StudentListDTO;
+import com.api.domain.JoinTest.V2.Entity.School;
 import com.api.domain.JoinTest.V2.Entity.Student;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,14 @@ public class StudentController {
         log.info("student = {}", student);
 
         return ResponseEntity.ok(new StudentListDTO(student));
+    }
+
+    @GetMapping("/dummy3/{id}")
+    public ResponseEntity<SchoolDTO> getMember3(@PathVariable Long id) {
+        School school = studentService.findSchool(id);
+        log.info("school = {}", school);
+
+        return ResponseEntity.ok(new SchoolDTO(school));
     }
 
 }
