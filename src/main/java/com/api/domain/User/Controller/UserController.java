@@ -19,25 +19,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/test-login")
-    public String testLogin(){
-        return "세션정보 확인";
-    }
-
-//    @GetMapping("/loginSuccess")
-//    public ResponseEntity<?> loginSuccess(@AuthenticationPrincipal CustomUser customUser, HttpServletResponse response){
-//        if (customUser == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-//        }
-//
-//        TokenDTO res = userService.token(customUser);
-//
-//        Cookie refreshTokenCookie = CookieUtil.createCookie("RefreshToken", res.getRefreshToken(), -1);
-//        response.addCookie(refreshTokenCookie);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공");
-//    }
-
     @GetMapping("/loginSuccess")
     public ResponseEntity<?> loginSuccess(@AuthenticationPrincipal CustomUser customUser, HttpServletResponse response){
         if (customUser == null) {

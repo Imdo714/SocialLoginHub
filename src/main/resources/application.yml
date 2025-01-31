@@ -1,0 +1,66 @@
+server:
+  port: 8008
+
+cloud:
+  aws:
+    credentials:
+      access-key: "${S3_ACCESS_KEY}"
+      secret-key: "${S3_SECRET_KEY}"
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: "${bucket}"
+    stack:
+      auto: false
+
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto : update
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: "${google_id}"
+            client-secret: "${google_secret}"
+            redirect-uri: "${google_uri}"
+            scope: profile, email
+            authorization-grant-type: authorization_code
+
+          kakao:
+            client-id: "${kakao_id}"
+            redirect-uri: "${kakao_id}"
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, profile_image
+            client-name: Kakao
+
+          naver:
+            client-id: "${naver_id}"
+            client-secret: "${naver_secret}"
+            redirect-uri: "${naver_uri}"
+            scope: name, email
+            authorization-grant-type: authorization_code
+
+        provider:
+          kakao:
+            authorization-uri: "${kakao_authorization_id}"
+            token-uri: "${kakao_token_uri}"
+            user-info-uri: "${kakao_user-info-uri}"
+            user-name-attribute: "id" # Kakao는 'id'가 기본 유저 식별자
+
+          naver:
+            authorization-uri: "${naver_authorization_uri}"
+            token-uri: "${naver_token_uri}"
+            user-info-uri: "${naver_user-info-uri}"
+            user-name-attribute: response
+  data:
+    redis:
+      host: localhost
+      port: 6379
