@@ -23,30 +23,6 @@ public class UploadController {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-//    @ResponseBody
-//    @PostMapping(value="/upload", produces="application/json; charset=UTF-8")
-//    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-//        try {
-//            String fileName=file.getOriginalFilename();
-//            String fileUrl = "https://s3.ap-northeast-2.amazonaws.com/" + bucket + "/ +fileName";
-//            ObjectMetadata metadata= new ObjectMetadata();
-//            metadata.setContentType(file.getContentType());
-//            metadata.setContentLength(file.getSize());
-//            amazonS3Client.putObject(bucket,fileName,file.getInputStream(),metadata);
-//            return ResponseEntity.ok(fileUrl);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
-//
-//    @ResponseBody
-//    @DeleteMapping(value="/upload", produces="application/json; charset=UTF-8")
-//    public ResponseEntity<String> deleteFile(@RequestParam String fileName){
-//        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
-//        return ResponseEntity.ok(fileName);
-//    }
-
     @ResponseBody
     @PostMapping(value="/upload", produces="application/json; charset=UTF-8")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
