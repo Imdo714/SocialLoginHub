@@ -1,5 +1,6 @@
 package com.api.domain.JoinTest.V2;
 
+import com.api.domain.JoinTest.V2.Dto.StudentDto;
 import com.api.domain.JoinTest.V2.Entity.School;
 import com.api.domain.JoinTest.V2.Entity.Student;
 import com.api.domain.JoinTest.V2.Repository.SchoolRepository;
@@ -38,8 +39,10 @@ public class StudentService {
         studentRepository.saveAll(Arrays.asList(student1, student2));
     }
 
-    public Student findMember(Long id) {
-        return studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Member not found!"));
+    public StudentDto findStudent(Long id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Member not found!"));
+        long count = studentRepository.countStudent();
+        return new StudentDto(student);
     }
 
     public School findSchool(Long id) {

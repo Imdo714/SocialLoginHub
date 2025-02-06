@@ -1,6 +1,7 @@
 package com.api.domain.JoinTest.V2;
 
 import com.api.domain.JoinTest.V2.Dto.SchoolDTO;
+import com.api.domain.JoinTest.V2.Dto.StudentDto;
 import com.api.domain.JoinTest.V2.Dto.StudentListDTO;
 import com.api.domain.JoinTest.V2.Entity.School;
 import com.api.domain.JoinTest.V2.Entity.Student;
@@ -33,11 +34,11 @@ public class StudentController {
 //    }
 
     @GetMapping("/dummy2/{id}")
-    public ResponseEntity<StudentListDTO> getMember2(@PathVariable Long id) {
-        Student student = studentService.findMember(id);
+    public ResponseEntity<StudentDto> getMember2(@PathVariable Long id) {
+        StudentDto student = studentService.findStudent(id);
         log.info("student = {}", student);
 
-        return ResponseEntity.ok(new StudentListDTO(student));
+        return ResponseEntity.ok(student);
     }
 
     @GetMapping("/dummy3/{id}")

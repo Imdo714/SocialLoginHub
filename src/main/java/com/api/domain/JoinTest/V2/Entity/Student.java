@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "student")
 public class Student {
 
     @Id
@@ -25,11 +26,5 @@ public class Student {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id") // 외래 키 컬럼 이름
     private School school;
-
-//    @ManyToMany
-//    @JoinTable()
-//    private List<ClassEntity> classes = new ArrayList<>();
-
-
 
 }
