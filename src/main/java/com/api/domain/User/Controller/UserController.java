@@ -1,8 +1,9 @@
 package com.api.domain.User.Controller;
 
+import com.api.domain.User.Dto.TokenDTO;
+import com.api.domain.User.Redis.TokenRedis;
 import com.api.domain.User.Service.UserService;
 import com.api.global.OAuth.CustomHandler.Dto.CustomUser;
-import com.api.domain.User.Redis.TokenRedis;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/loginSuccess")
+    @GetMapping("/loginSuccess") // Redis Version
     public ResponseEntity<?> loginSuccess(@AuthenticationPrincipal CustomUser customUser, HttpServletResponse response){
         if (customUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);

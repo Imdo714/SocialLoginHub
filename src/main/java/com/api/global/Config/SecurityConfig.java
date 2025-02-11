@@ -36,7 +36,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login/oauth2/code/*", "/oauth2/authorization/*").permitAll()  // OAuth2 리디렉션 URL 허용
+                        .requestMatchers("/login/oauth2/code/*", "/oauth2/authorization/*", "/actuator/**").permitAll()  // OAuth2 리디렉션 URL 허용
                         .anyRequest().permitAll() // 모든 요청 허용
                 );
 

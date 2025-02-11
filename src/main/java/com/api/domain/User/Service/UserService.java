@@ -1,11 +1,11 @@
 package com.api.domain.User.Service;
 
 import com.api.domain.User.Entity.TokenEntity;
+import com.api.domain.User.Redis.TokenRedis;
 import com.api.domain.User.Repository.TokenRepository;
 import com.api.domain.Utils.RedisUtil.RedisUtil;
 import com.api.global.OAuth.CustomHandler.Dto.CustomUser;
 import com.api.global.OAuth.Jwt.JwtInterface;
-import com.api.domain.User.Redis.TokenRedis;
 import com.api.domain.User.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 
 @Slf4j
 @Service

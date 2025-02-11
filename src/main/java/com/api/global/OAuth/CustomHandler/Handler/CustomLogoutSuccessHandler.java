@@ -1,6 +1,5 @@
 package com.api.global.OAuth.CustomHandler.Handler;
 
-import com.api.domain.User.Service.UserService;
 import com.api.domain.Utils.RedisUtil.RedisUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -10,12 +10,12 @@ import java.util.Map;
 
 public class CustomUser implements OAuth2User {
 
-    private final int userid;
+    private final Integer userid;
     private final String username;
     private final String nickname;
     private final String email;
 
-    public CustomUser(int userid, String username, String nickname, String email) {
+    public CustomUser(Integer userid, String username, String nickname, String email) {
         this.userid = userid;
         this.username = username;
         this.nickname = nickname;
