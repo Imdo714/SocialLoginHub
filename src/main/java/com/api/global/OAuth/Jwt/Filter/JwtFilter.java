@@ -1,5 +1,6 @@
 //package com.api.global.OAuth.Jwt.Filter;
 //
+//import com.api.global.OAuth.CustomHandler.Dto.CustomUser;
 //import com.api.global.OAuth.Jwt.JwtTokenProvider;
 //import io.jsonwebtoken.Claims;
 //import io.jsonwebtoken.ExpiredJwtException;
@@ -10,11 +11,15 @@
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.redis.core.RedisTemplate;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.stereotype.Component;
 //import org.springframework.util.AntPathMatcher;
 //import org.springframework.web.filter.OncePerRequestFilter;
 //
 //import java.io.IOException;
+//import java.util.Collections;
 //
 //@Slf4j
 //@Component
@@ -74,6 +79,13 @@
 //                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 //                    return;
 //                }
+//
+//                CustomUser customUser = new CustomUser(null, claims.getSubject(), null, null);
+//                Authentication authentication =
+//                        new UsernamePasswordAuthenticationToken(customUser, null, Collections.emptyList()); // 사용자 정보, 비밀번호, 권한 없음
+//
+//                // SecurityContext에 저장
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
 //            } catch (ExpiredJwtException e) { // Access Token 만료 시 발생
 //                // 요청을 완수한 이후에 에이전트에게 문서 뷰를 리셋하라고 열려 줌 205
 //                response.setStatus(HttpServletResponse.SC_RESET_CONTENT);

@@ -1,50 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- prod에서만 로그 수집하도록 설정 -->
-    <springProfile name="prod">
-        <property name="LOG_DIR" value="/var/log/spring-boot" />
 
-        <!-- 콘솔 출력 설정 -->
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
-            </encoder>
-        </appender>
+    <!-- 로그 파일 저장 위치 설정 -->
+    <property name="LOG_PATH" value="/home/log" />
 
-        <!-- 일반 파일 출력 설정 -->
-        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_DIR}/general.log</file>
-            <encoder>
-                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-            </encoder>
-            <!-- 지난 로그는 loghistory로 저장 -->
-            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <!-- 로그 파일 이름 설정: 날짜별 -->
-                <fileNamePattern>${LOG_DIR}/general-%d{yyyy-MM-dd}.loghistory</fileNamePattern>
-                <maxHistory>7</maxHistory> <!-- 로그 파일을 최대 7일 동안 유지 -->
-            </rollingPolicy>
-        </appender>
+    <!-- 콘솔 로그 패턴 설정 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-        <!-- 루트 로거 설정: 콘솔 및 일반 파일에 로그 저장 -->
-        <root level="info">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="FILE"/>
-        </root>
-    </springProfile>
+    <!-- INFO 로그를 저장하는 파일 -->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/info/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/info/info-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] %logger{36} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
 
-    <!-- test 환경 설정 -->
-    <springProfile name="test">
-        <property name="LOG_DIR" value="logs" />
+    <!-- WARN & ERROR 로그를 저장하는 파일 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/warn_error/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/warn_error/error-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] %logger{36} - %msg%n</pattern>
+        </encoder>
+        <!-- WARN & ERROR 모두 저장 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
 
-        <!-- 콘솔 출력 설정 -->
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
-            </encoder>
-        </appender>
+    <!-- 로거 설정 -->
+    <logger name="com.example" level="INFO" additivity="false">
+        <appender-ref ref="INFO_FILE" />
+        <appender-ref ref="ERROR_FILE" />
+    </logger>
 
-        <!-- test 환경에서는 로그를 콘솔에만 출력 -->
-        <root level="info">
-            <appender-ref ref="CONSOLE"/>
-        </root>
-    </springProfile>
+    <!-- 기본 root 로거 설정 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="INFO_FILE" />
+        <appender-ref ref="ERROR_FILE" />
+    </root>
+
 </configuration>

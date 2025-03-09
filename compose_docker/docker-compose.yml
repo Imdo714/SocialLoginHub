@@ -38,7 +38,7 @@ services:
     ports:
       - "9080:9080"
     volumes:
-      - /var/log/spring-boot:/var/log/spring-boot
+      - //c/home/log:/home/log
       - ./promtail-config.yml:/etc/promtail/promtail-config.yml
     command: -config.file=/etc/promtail/promtail-config.yml
     networks:

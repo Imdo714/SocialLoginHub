@@ -22,21 +22,13 @@ public class UserController {
 
     @GetMapping("/loginSuccess") // Redis Version
     public ResponseEntity<?> loginSuccess(@AuthenticationPrincipal CustomUser customUser, HttpServletResponse response){
-        if (customUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
-        try{
-            TokenRedis res = userService.token(customUser);
-            return ResponseEntity.status(HttpStatus.OK).body(res);
-        } catch (RedisConnectionFailureException e){
-            throw new RedisConnectionFailureException("RedisConnectionFailure");
-        }
+        TokenRedis res = userService.token(customUser);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @GetMapping("/loginFailure")
     public ResponseEntity<?> loginFailure(@RequestParam(required = false) String error){
-        log.info("error = {}", error);
+        log.error("error = {}", error);
         return ResponseEntity.status(HttpStatus.OK).body("로그인 실패");
     }
 

@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +70,10 @@ public class UserService {
 
     @Transactional
     public TokenRedis token(CustomUser customUser) {
+        if (customUser == null) {
+            throw new IllegalArgumentException("없는 유저입니다.");
+        }
+
         String accessToken = null;
         try {
             accessToken = jwtInterface.getAccess(customUser.getName());
